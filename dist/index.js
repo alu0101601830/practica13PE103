@@ -10,8 +10,6 @@ connect('mongodb://127.0.0.1:27017/dsi-assessment').then(() => {
 }).catch(() => {
     console.log('Something went wrong when conecting to the database');
 });
-//const uri = "mongodb://localhost:27017/dsi-assessment";
-//mongoose.connect(uri, { useNewUrlParser: true, useUnifiedTopology: true });
 const db = mongoose.connection;
 db.on("error", console.error.bind(console, "connection error:"));
 db.once("open", () => {
@@ -54,7 +52,7 @@ app.get("/users/:username", async (req, res) => {
         res.status(400).json({ error: error.message });
     }
 });
-app.put("/users/:username", async (req, res) => {
+app.patch("/users/:username", async (req, res) => {
     try {
         const user = await User.findOneAndUpdate({ username: req.params.username }, req.body, {
             new: true,
@@ -120,7 +118,7 @@ app.get("/products/:id", async (req, res) => {
         res.status(400).json({ error: error.message });
     }
 });
-app.put("/products/:id", async (req, res) => {
+app.patch("/products/:id", async (req, res) => {
     try {
         const product = await Product.findByIdAndUpdate(req.params.id, req.body, { new: true });
         if (!product) {
